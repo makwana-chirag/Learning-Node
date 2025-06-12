@@ -1,5 +1,5 @@
 {
-  "name": "npm-demo",
+  "name": "tree-lions",
   "version": "1.0.0",
   "description": "no description",
   "main": "index.js",
@@ -12,5 +12,8 @@
   "dependencies": {
     "mongoose": "^8.15.1",
     "underscore": "^1.13.7"
+  },
+  "devDependencies": {
+    "jshint": "^2.13.6"
   }
 }
