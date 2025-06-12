@@ -1,2 +1,6 @@
 # demo-node
-learning about node js 
+learning about 
+node js 
+express
+mongoose
+
