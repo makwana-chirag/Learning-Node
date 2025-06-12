@@ -18,14 +18,18 @@ const courses = [
     name: "CSS",
   },
 ];
+
+// base rount
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+// get api to get all courses
 app.get("/api/courses", (req, res) => {
-  res.send([1, 2, 3, 4, 5]);
+  res.send(courses);
 });
 
+// get api to get course by id
 app.get("/api/courses/:id", (req, res) => {
   const course = courses.find((c) => c.id === parseInt(req.params.id));
   if (!course) {
@@ -35,10 +39,7 @@ app.get("/api/courses/:id", (req, res) => {
   }
 });
 
-app.get("/api/posts/:year/:month", (req, res) => {
-  res.send(req.query);
-});
-
+// post api to create new course
 app.post("/api/courses", (req, res) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
@@ -56,6 +57,41 @@ app.post("/api/courses", (req, res) => {
   courses.push(course);
 
   res.send(course);
+});
+
+// put api to update existing course
+app.put("/api/courses/:id", (req, res) => {
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+  if (!course)
+    res.status(404).send("The Course you are trying to modify does not exist");
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+
+  const result = schema.validate(req.body);
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
+
+  course.name = req.body.name;
+  res.send(course);
+});
+
+// get api to get post by mutiple params and query
+app.get("/api/posts/:year/:month", (req, res) => {
+  res.send(req.query);
+});
+
+app.delete("/api/courses/:id", (req, res) => {
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+  if (!course)
+    res.status(404).send("The Course you are trying to delete does not exist");
+  const index = courses.indexOf(course);
+
+  courses.splice(index, 1);
+
+  res.send("Course has been deleted");
 });
 // PORT
 const port = process.env.PORT || 3000;
