@@ -1,9 +1,18 @@
 const express = require("express");
 const Joi = require("joi");
 const app = express();
-const logger = require("/logger");
+const logger = require("./logger");
+const helmet = require("helmet");
+const morgan = require("morgan");
+
+// console.log(process.env.NODE_ENV);
 
 app.use(express.json());
+app.use(helmet());
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  console.log("Morgon enabled...");
+}
 
 app.use(logger);
 
@@ -18,7 +27,7 @@ const courses = [
   },
   {
     id: 3,
-    name: "CSS",
+    name: "Full Stack",
   },
 ];
 
