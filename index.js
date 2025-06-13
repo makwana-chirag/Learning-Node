@@ -1,8 +1,11 @@
 const express = require("express");
 const Joi = require("joi");
 const app = express();
+const logger = require("/logger");
 
 app.use(express.json());
+
+app.use(logger);
 
 const courses = [
   {
