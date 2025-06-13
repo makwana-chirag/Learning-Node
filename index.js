@@ -1,20 +1,25 @@
 const express = require("express");
 const Joi = require("joi");
 const app = express();
+const startupDebugger = require("debug")("app:startup");
+const dbDebugger = require("debug")("app:db");
 const logger = require("./logger");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
 // console.log(process.env.NODE_ENV);
 
+app.set("view engine", "pug");
+app.set("views", "./views");
 app.use(express.json());
 app.use(express.static("public"));
 app.use(helmet());
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  console.log("Morgon enabled...");
+  startupDebugger("Morgon enabled...");
 }
 
+dbDebugger("connecting to database");
 app.use(logger);
 
 const courses = [
@@ -34,7 +39,8 @@ const courses = [
 
 // base rount
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  // res.send("Hello World");
+  res.render("index", { title: "My Express App", message: "Wow" });
 });
 
 // get api to get all courses
