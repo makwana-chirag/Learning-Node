@@ -15,6 +15,29 @@ mongoose
   .then(() => console.log("Connect to MongoDB"))
   .catch((err) => console.log("Cloud not connect to MongoDB...", err));
 
+const courseSchema = new mongoose.Schema({
+  name: String,
+  author: String,
+  tags: [String],
+  date: { type: Date, default: Date.now },
+  isPublished: Boolean,
+});
+
+const Course = mongoose.model("Course", courseSchema);
+
+const createCourse = async () => {
+  const course = new Course({
+    name: "Node.js Course",
+    author: "Mosh",
+    tags: ["node", "backend"],
+    isPublished: true,
+  });
+
+  const result = await course.save();
+  console.log("🚀 ~ result:", result);
+};
+
+// createCourse();
 app.set("view engine", "pug");
 app.set("views", "./views");
 app.use(express.json());
