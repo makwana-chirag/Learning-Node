@@ -1,6 +1,7 @@
 const express = require("express");
 const courses = require("./routes/courses");
 const home = require("./routes/home");
+const mongoose = require("mongoose");
 const app = express();
 const startupDebugger = require("debug")("app:startup");
 const dbDebugger = require("debug")("app:db");
@@ -9,6 +10,10 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 // console.log(process.env.NODE_ENV);
+mongoose
+  .connect("mongodb://localhost:27017/playground")
+  .then(() => console.log("Connect to MongoDB"))
+  .catch((err) => console.log("Cloud not connect to MongoDB...", err));
 
 app.set("view engine", "pug");
 app.set("views", "./views");
