@@ -37,6 +37,12 @@ const createCourse = async () => {
   console.log("🚀 ~ result:", result);
 };
 
+const getCourses = async () => {
+  const courses = await Course.find().then();
+  console.log("courses", courses);
+};
+
+getCourses();
 // createCourse();
 app.set("view engine", "pug");
 app.set("views", "./views");
