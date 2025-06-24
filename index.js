@@ -57,9 +57,20 @@ const getCourses = async () => {
   // find({isPublished:true, author:"Chirag"})
   // find({price : { $gte: 10, $lte :20}})
   // find({ price : {$in:[10,15,20]}})
-  const conrseWithLogicalOperatorFilter = await Course.find().or([{author:"Chirag"},{isPublished : true}]).and([])
+  const courseWithLogicalOperatorFilter = await Course.find().or([{author:"Chirag"},{isPublished : true}]).and([])
+  const courseWithRegex  = await  Course
+  // appand i at the end to make query insensitive (means not case sensitive)
+  .find({author : /m$/i})
+  // course who's author start with chirag (/^chirag/)
+  .find({author: /^Chirag/})
+  // course who's author end with chirag (/chirag$/)
+  .find({author:/m$/})
+  // find course wwhere name is in middle or anywhare not fix at start or end 
+  .find({author : /.*Chirag.*/})
+  // below quer is for finding the total number of documents counts 
+  const courseCount = await Course.countDocuments({isPublished:true})
   const courses = await Course.find({isPublished:true, author:"Chirag"}).limit(2).sort({name:1}).select({name:1, tags:1});
-  console.log("courses", courses);
+  console.log("courses", courseCount);
 };
 
 getCourses();
