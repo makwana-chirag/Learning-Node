@@ -38,7 +38,10 @@ const createCourse = async () => {
 };
 
 const getCourses = async () => {
-  const courses = await Course.find({});
+  // 1 : indicate ascending 
+  // 2 : indicate descending
+  // below is query for limit of number of result,sorting in ascending order with returning only selected two values per object
+  const courses = await Course.find({isPublished:true, author:"Mosh"}).limit(2).sort({name:1}).select({name:1, tags:1});
   console.log("courses", courses);
 };
 
