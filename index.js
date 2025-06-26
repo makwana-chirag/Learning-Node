@@ -69,6 +69,9 @@ const getCourses = async () => {
   .find({author : /.*Chirag.*/})
   // below quer is for finding the total number of documents counts 
   const courseCount = await Course.countDocuments({isPublished:true})
+  const pageNumber = 2;
+  const pageSize = 10;
+  const courseWithPagination = await Course.find({isPublished:true}).skip((pageNumber -1) * pageSize).limit(pageSize)
   const courses = await Course.find({isPublished:true, author:"Chirag"}).limit(2).sort({name:1}).select({name:1, tags:1});
   console.log("courses", courseCount);
 };
