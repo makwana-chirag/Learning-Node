@@ -39,40 +39,51 @@ const createCourse = async () => {
 
 const getCourses = async () => {
   // below are comparision query operator for performting any filter in api query
-  // eq  : equal 
-  // ne  : not equal 
-  // gt  : greter then 
-  // gte : greter then equal 
-  // lt  : less then 
-  // lte : less then equal 
-  // in  : in 
-  // nin : not in 
-  // below are logical query operator for performing any filter in api query 
-  // or 
-  // and 
-  // ascending an ddescending values keys in number 
-  // 1   : indicate ascending 
+  // eq  : equal
+  // ne  : not equal
+  // gt  : greter then
+  // gte : greter then equal
+  // lt  : less then
+  // lte : less then equal
+  // in  : in
+  // nin : not in
+  // below are logical query operator for performing any filter in api query
+  // or
+  // and
+  // ascending an ddescending values keys in number
+  // 1   : indicate ascending
   // 2   : indicate descending
   // below is query for limit of number of result,sorting in ascending order with returning only selected two values per object
   // find({isPublished:true, author:"Chirag"})
   // find({price : { $gte: 10, $lte :20}})
   // find({ price : {$in:[10,15,20]}})
-  const courseWithLogicalOperatorFilter = await Course.find().or([{author:"Chirag"},{isPublished : true}]).and([])
-  const courseWithRegex  = await  Course
-  // appand i at the end to make query insensitive (means not case sensitive)
-  .find({author : /m$/i})
-  // course who's author start with chirag (/^chirag/)
-  .find({author: /^Chirag/})
-  // course who's author end with chirag (/chirag$/)
-  .find({author:/m$/})
-  // find course wwhere name is in middle or anywhare not fix at start or end 
-  .find({author : /.*Chirag.*/})
-  // below quer is for finding the total number of documents counts 
-  const courseCount = await Course.countDocuments({isPublished:true})
+  const courseWithLogical = await Course.find({
+    author: "Chirag",
+    isPublished: true,
+  });
+  const courseWithLogicalOperatorFilter = await Course.find()
+    .or([{ author: "Chirag" }, { isPublished: true }])
+    .and([]);
+  const courseWithRegex = await Course
+    // appand i at the end to make query insensitive (means not case sensitive)
+    .find({ author: /m$/i })
+    // course who's author start with chirag (/^chirag/)
+    .find({ author: /^Chirag/ })
+    // course who's author end with chirag (/chirag$/)
+    .find({ author: /m$/ })
+    // find course wwhere name is in middle or anywhare not fix at start or end
+    .find({ author: /.*Chirag.*/ });
+  // below quer is for finding the total number of documents counts
+  const courseCount = await Course.countDocuments({ isPublished: true });
   const pageNumber = 2;
   const pageSize = 10;
-  const courseWithPagination = await Course.find({isPublished:true}).skip((pageNumber -1) * pageSize).limit(pageSize)
-  const courses = await Course.find({isPublished:true, author:"Chirag"}).limit(2).sort({name:1}).select({name:1, tags:1});
+  const courseWithPagination = await Course.find({ isPublished: true })
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize);
+  const courses = await Course.find({ isPublished: true, author: "Chirag" })
+    .limit(2)
+    .sort({ name: 1 })
+    .select({ name: 1, tags: 1 });
   console.log("courses", courseCount);
 };
 
